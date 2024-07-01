@@ -359,7 +359,6 @@ class Chat:
         return outputs 
 
 if __name__ == '__main__':
-    # model_path = "/mnt/petrelfs/zhangqinglong/Documents/Husky/work_dirs/husky_v3/EmbodiedGPT/pretrain_0727"
     model_path = "../7Btiny"
     device = "cuda" if torch.cuda.is_available() else "cpu"
     chat = Chat(model_path, device=device, num_gpus=1, max_new_tokens=1024, load_8bit=False)
@@ -369,7 +368,7 @@ if __name__ == '__main__':
     video_state = False
 
     while True:
-        query = input("\n")
+        query = input("输入对话\n")
         if query.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
             if os.path.exists(query):
                 print("received.")
@@ -402,12 +401,7 @@ if __name__ == '__main__':
         else:
             modal_type = "text"
 
-        # image_test = "assets/husky.jpg"
-        # image_test = "assets/yoga.mp4"
-        # video_test = "assets/pretty_girl.mp4"
-        # video_test = "assets/stock-footage-billiards-concentrated-young-woman-playing-in-club.webm"
-        # video_test = "assets/stock-footage-kherson-ukraine-may-open-free-rock-music-festival-crowd-partying-at-a-rock-concert.webm"
-        prompt = ""
+    
         if query.lower().endswith(('txt')):
             if os.path.exists(query):
                 print("received.")
