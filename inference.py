@@ -368,7 +368,7 @@ if __name__ == '__main__':
     video_state = False
 
     while True:
-        query = input("输入对话\n")
+        query = input("Type in:\n")
         if query.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
             if os.path.exists(query):
                 print("received.")
@@ -384,7 +384,7 @@ if __name__ == '__main__':
                 video_state = True
                 continue
 
-        if query == "stop":
+        if query == "exit":
             break
         if query == "clear" or query == "" or query == "\n":
             chat.conv = get_conv_template("husky").copy()
@@ -401,7 +401,7 @@ if __name__ == '__main__':
         else:
             modal_type = "text"
 
-    
+        prompt = ""
         if query.lower().endswith(('txt')):
             if os.path.exists(query):
                 print("received.")
