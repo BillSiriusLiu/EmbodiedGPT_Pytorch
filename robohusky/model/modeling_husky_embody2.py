@@ -259,7 +259,7 @@ class HuskyFlashAttention2(HuskyAttention):
             hidden_states: torch.Tensor,
             head_mask: Optional[torch.Tensor] = None,
             output_attentions: Optional[bool] = False,
-    ) -> tuple[Any, None]:
+    ) -> (Any, None):
         # HuskyFlashAttention2 does not support output_attentions
         assert output_attentions is False
 
@@ -707,7 +707,9 @@ class HuskyQFormerMultiHeadAttention(nn.Module):
         self.num_attention_heads = config.num_attention_heads
         self.attention_head_size = int(config.hidden_size / config.num_attention_heads)
         self.all_head_size = self.num_attention_heads * self.attention_head_size
-
+       
+        self.embed_size = config.hidden_size
+        
         self.query = nn.Linear(config.hidden_size, self.all_head_size)
         if is_cross_attention:
             self.key = nn.Linear(config.encoder_hidden_size, self.all_head_size)
