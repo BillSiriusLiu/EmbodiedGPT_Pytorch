@@ -1,0 +1,31 @@
+这是你在执行了以下步骤后的场景。
+
+[Finished Steps]
+List(DoRecognize(object='拿饮料的人'), CloseTo(object='拿饮料的人'))
+
+根据输入的图像和已完成的步骤，你需要详细规划出机器狗接下来的执行动作步骤，可以放弃最初的规划重新规划。请记住最后一步必须是完成"Done"。
+请按如下示例格式接着输出你规划的接下来的步骤。
+
+示例
+'''
+[Plan]
+[
+    {
+        "index":3,
+        "step":"WaggingTail()",
+        "description:"摇尾巴"
+    },
+    {
+        "index":4,
+        "step":"VQA(query='为什么找他')",
+        "description:"回答问题"
+    }
+    {
+        "index":5,
+        "step":"Done",
+        "description":"完成"
+    }
+]
+'''
+
+[Plan]
