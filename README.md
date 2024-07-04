@@ -2,6 +2,29 @@
 
 We will update the instructions for this codebase as soon as possible.
 
+## Personal Update by Bill Liu
+
+### Bug Fix and New Feartures
+
+inference.py 移至project根目录，解决import路径问题 \
+inference.py 添加了通过文件路径输入prompt的功能 \
+robohusky/model/modeling_husky_embody2.py 的函数返回值类型bugfix
+
+### Quick Start
+
+设置好模型、图片、prompt路径后，运行inference.py。在出现Type in: 提示后输入图片路径则传入图片，输入prompt路径则传入prompt文本，直接输入文本回车则传入文本。其他操作见 inference.py
+
+### Note
+
+模型路径不应有下划线_否则报错
+
+### Docker on Server
+
+该project的docker container 在 tj5-ai-train-g8a100-01 上 \
+名为 bill_embodiedgpt \
+project 根目录在~/EmbodiedGPT_Pytorch \
+模型参数在 ~/7Btiny
+
 ## Installation
 
 See [INSTALLATION.md](https://github.com/EmbodiedGPT/EmbodiedGPT_Pytorch/blob/main/INSTALLATION.md)
