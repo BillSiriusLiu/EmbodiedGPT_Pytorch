@@ -283,15 +283,22 @@ class Chat:
             stopping_criteria=stopping_criteria
         )
 
-    def ask(self, text, conv, modal_type="image"):
+    def ask(self, init, task, conv, modal_type="image"):
         assert modal_type in ["text", "image", "video"]
         conversations = []
 
         if len(conv.messages) > 0 or modal_type == "text":
-            conv.append_message(conv.roles[0], text)
+            conv.append_message(conv.roles[0], init = task)
         elif modal_type == "image":
             query = ""
-            
+            init_idx = task.find("[Initial Environment Image]")
+            current_idx = task.find("[Environment Image after Executing Some Steps]")
+            content.append({"text":str[:init_idx+27]})
+            content.append({"multiModalConfig": multiModalConfig})
+            content.append({"text": str[init_idx+27:current_idx+46]})
+            content.append({"multiModalConfig": multiModalConfigCurrent})
+            content.append({"text": str[current_idx+46:]})
+
             conv.append_message(conv.roles[0], self.image_query + "\n" + text)
         else:
             conv.append_message(conv.roles[0], self.video_query + "\n" + text)
@@ -371,10 +378,11 @@ if __name__ == '__main__':
 
     img1_path = 'img/coke_laptop/test2_3person.jpg'
     img2_path = 'img/coke_laptop/test4_coke.jpg'
-    prompt_initial_path = 'prompt/initial.txt'
-    prompt_sequential_path = 'prompt/sequential.txt'
+    prompt_init_path = 'prompt/init.txt'
+    prompt_task_path = 'prompt/task.txt'
     
-    vision_feature = chat.get_image_embedding(img1_path)
+    vision_feature1 = chat.get_image_embedding(img1_path)
+    vision_feature2 = chat.get_image_embedding(img2_path)
     chat.conv = get_conv_template("husky").copy()
     image_state = True
     if image_state:
@@ -382,54 +390,23 @@ if __name__ == '__main__':
     else:
         modal_type = "text"
     
-    prompt = ""    
-    with open(prompt_initial_path, 'r') as f:
+    init = ""    
+    with open(prompt_init_path, 'r') as f:
         for line in f:
-            prompt += line
-    print(prompt)
+            init += line
+    print(init)
     print("--------------------")
+    task = ""
+    with open(prompt_task_path, 'r') as f:
+        for line in f:
+            task += line
+    print(task)
 
-    conversations = chat.ask(text=prompt, conv=chat.conv, modal_type=modal_type)
+
+    conversations = chat.ask(init=init, task=task, conv=chat.conv, modal_type="image")
     outputs = chat.answer(conversations, vision_feature, modal_type=modal_type)
     # NOTE: strip is important to align with the training data.
     chat.conv.messages[-1][1] = outputs.strip()
+
     print(f"Husky: \n{outputs}")
-
     
-    for i in range(2):
-        if 
-        if query.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
-            if os.path.exists(query):
-                print("received.")
-                
-                continue
-       
-        if query == "exit":
-            break
-        if query == "clear" or query == "" or query == "\n":
-            chat.conv = get_conv_template("husky").copy()
-            image_state = False
-            video_state = False
-            os.system("clear")
-            print("欢迎使用 husky-13b-zh 模型，输入内容即可进行对话，clear 清空对话历史，stop 终止程序")
-            continue
-
-        
-
-        prompt = ""
-        if query.lower().endswith(('txt')):
-            if os.path.exists(query):
-                print("received.")
-                with open(query, 'r') as f:
-                    for line in f:
-                        prompt += line
-                query = prompt
-                print(query)
-                print("-----------------------------")
-
-        conversations = chat.ask(text=query, conv=chat.conv, modal_type=modal_type)
-        outputs = chat.answer(conversations, vision_feature, modal_type=modal_type)
-        # NOTE: strip is important to align with the training data.
-        chat.conv.messages[-1][1] = outputs.strip()
-
-        print(f"Husky: \n{outputs}")
