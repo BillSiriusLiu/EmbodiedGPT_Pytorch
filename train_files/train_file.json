@@ -1,0 +1,8 @@
+[
+  {
+    "data_name": "selfmade",
+    "text_file": "./datasets/a.jsonl",
+    "image_path": "./datasets/img/",
+    "data_type": "image",
+    "size": 456
+  }

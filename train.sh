@@ -1,27 +1,5 @@
 #!/usr/bin/env bash
-
-set -x
-
-PARTITION= "your partition"
-
-GPUS=${GPUS:-your number}
-GPUS_PER_NODE=${GPUS_PER_NODE:-your number}
-QUOTA_TYPE="reserved"
-
-CPUS_PER_TASK=${CPUS_PER_TASK:-10}
-SRUN_ARGS=${SRUN_ARGS:-""}
-
-srun -p ${PARTITION} \
-  --job-name='embodied_family' \
-  --gres=gpu:${GPUS_PER_NODE} \
-  --nodes= your number \
-  --ntasks=${GPUS} \
-  --ntasks-per-node=${GPUS_PER_NODE} \
-  --cpus-per-task=${CPUS_PER_TASK} \
-  --kill-on-bad-exit=1 \
-  --quotatype=${QUOTA_TYPE} \
-  ${SRUN_ARGS} \
-  python -u ./robohusky/train/train.py\
+python -u ./robohusky/train/train.py\
   --model_name_or_path "../7Btiny/" \
   --cache_dir "../cache/"\
   --conv_style "husky" \
