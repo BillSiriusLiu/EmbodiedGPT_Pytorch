@@ -361,7 +361,7 @@ class Chat:
 if __name__ == '__main__':
     model_path = "../7Btiny"
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    chat = Chat(model_path, device=device, num_gpus=4, max_new_tokens=1024, load_8bit=False)
+    chat = Chat(model_path, device=device, num_gpus=1, max_new_tokens=1024, load_8bit=False)
 
     vision_feature = None
     image_state = False
