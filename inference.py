@@ -117,8 +117,8 @@ def load_model(
     if load_8bit:
         compress_module(model, device)
 
-    #if (device == "cuda" and num_gpus == 1) or device == "mps":
-    #    model.to(device)
+    if (device == "cuda" and num_gpus == 1) or device == "mps":
+        model.to(device)
 
     model = model.eval()
     return model, tokenizer
@@ -207,12 +207,12 @@ def generate_stream(
 
     pixel_values = None
     if images is not None:
-        pixel_values = load_image(images)#.to(device)  # only support one image
+        pixel_values = load_image(images).to(device)  # only support one image
         image_query = DEFAULT_IMG_START_TOKEN + DEFAULT_IMG_END_TOKEN
         prompt = prompt.replace("<image>", image_query)
 
     elif videos is not None:
-        pixel_values = load_video(videos)#.to(device)
+        pixel_values = load_video(videos).to(device)
         video_query = DEFAULT_VIDEO_START_TOKEN + DEFAULT_VIDEO_END_TOKEN
         prompt = prompt.replace("<video>", video_query)
 
@@ -301,7 +301,7 @@ class Chat:
     @torch.no_grad()
     def get_image_embedding(self, image_file):
         pixel_values = load_image(image_file)
-        pixel_values = pixel_values.unsqueeze(0)#.to(self.device, dtype=self.dtype)
+        pixel_values = pixel_values.unsqueeze(0).to(self.device, dtype=self.dtype)
         language_model_inputs = self.model.extract_feature(pixel_values)
         return language_model_inputs
 
@@ -310,7 +310,7 @@ class Chat:
         pixel_values = load_video(video_file)
         TC, H, W = pixel_values.shape
         pixel_values = pixel_values.reshape(TC // 3, 3, H, W).transpose(0, 1)  # [C, T, H, W]
-        pixel_values = pixel_values.unsqueeze(0).#to(self.device, dtype=self.dtype)
+        pixel_values = pixel_values.unsqueeze(0).to(self.device, dtype=self.dtype)
         assert len(pixel_values.shape) == 5
         language_model_inputs = self.model.extract_feature(pixel_values)
         return language_model_inputs
@@ -323,8 +323,8 @@ class Chat:
         )
         model_inputs.pop("token_type_ids", None)
 
-        input_ids = model_inputs["input_ids"].#to(self.device)
-        attention_mask = model_inputs["attention_mask"].#to(self.device)
+        input_ids = model_inputs["input_ids"].to(self.device)
+        attention_mask = model_inputs["attention_mask"].to(self.device)
 
         if modal_type == "text":
             generation_output = self.model.language_model.generate(
@@ -337,7 +337,7 @@ class Chat:
         else:
             pixel_values = model_inputs.pop("pixel_values", None)
             if pixel_values is not None:
-                pixel_values = pixel_values.#to(self.device)
+                pixel_values = pixel_values.to(self.device)
 
             generation_output = self.model.generate(
                 pixel_values=pixel_values,
