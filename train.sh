@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-python -u ./robohusky/train/train.py\
+python3 -u ./train.py\
   --model_name_or_path "../7Btiny/" \
   --cache_dir "../cache/"\
   --conv_style "husky" \
