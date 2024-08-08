@@ -39,15 +39,17 @@ from transformers.utils import (
     add_start_docstrings_to_model_forward,
     logging,
     replace_return_docstrings,
-    is_flash_attn_available
+    #is_flash_attn_available
 )
 from transformers import AutoModelForCausalLM, GenerationConfig
 
 from .configuration_husky import HuskyConfig, HuskyQFormerConfig, HuskyVisionConfig
 
-if is_flash_attn_available():
-    from flash_attn import flash_attn_func
-    from flash_attn.bert_padding import index_first_axis, pad_input, unpad_input  # noqa
+#if is_flash_attn_available():
+#    from flash_attn import flash_attn_func
+#    from flash_attn.bert_padding import index_first_axis, pad_input, unpad_input  # noqa
+from flash_attn import flash_attn_func
+from flash_attn.bert_padding import index_first_axis, pad_input, unpad_input  # noqa
 
 try:
     from apex.normalization import FusedLayerNorm as LayerNorm
